@@ -81,7 +81,6 @@ export function CommentProvider({ children }) {
             },[]) */
             
             setComments(res.data)
-            console.log("coments: " + comments)
         } catch (error) {
             console.error(error);
         }

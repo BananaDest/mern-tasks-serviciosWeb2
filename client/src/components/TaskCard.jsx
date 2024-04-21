@@ -5,14 +5,14 @@ import { useComments } from "../context/CommentContext";
 import CommentForm from "./CommentForm";
 function TaskCard ({task}){
     const {deleteTask} = useTasks();
-    const {getCommentsByTaskId, comments} = useComments();
+    const {getCommentsByTaskId, deleteComment, comments} = useComments();
     const [showAddComment, setShowAddComment] = useState(false);
+    const [selectedCommentId, setSelectedCommentId] = useState("");
     
-    //console.log(comments)
     useEffect(()=>{
         getCommentsByTaskId(task._id)
     },[])
-    console.log("comment in card: " + comments)
+    
     return (
         <div className="bg-zinc-800 max-w-md w-full p-10 rounded-md" >
             <header className="flex justify-between">
@@ -38,15 +38,27 @@ function TaskCard ({task}){
                 {showAddComment && 
                     <CommentForm 
                         taskId={task._id}
-                        setShowAddComment={setShowAddComment}    
+                        setShowAddComment={setShowAddComment}
+                        commentId={selectedCommentId}
+                        setShowForm={setShowAddComment}
                     />
                 }
                 <div>
                     {
                         comments.map(comment => (
-                            
-                            <div key={comment._id}>
-                                {comment.body}
+                            <div key={comment._id} className="p-3">                            
+                                <div className="w-full bg-zinc-500 text-white px-4 py-2 rounded-md my-2" >
+                                    {comment.body}
+                                </div>
+                                <div className="flex gap-x-2 items-center text-md" >
+                                    <button onClick={()=>{
+                                        deleteComment(comment._id);
+                                    }}> Delete </button>
+                                    <button onClick={()=>{
+                                        setSelectedCommentId(comment._id);
+                                        setShowAddComment(true);
+                                    }}> Edit </button>
+                                </div>
                             </div>
                         ))
                     }

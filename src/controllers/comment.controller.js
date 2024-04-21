@@ -41,5 +41,5 @@ export const getComment = async (req, res) => {
     const comment = await Comment.findById(req.params.id);
     if (!comment) return res.status(404).json({ message: "Comment not found" });
 
-    res.json(Comment);
+    res.json(comment);
 };
